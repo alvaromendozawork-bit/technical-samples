@@ -1,0 +1,5 @@
+[
+  {"id":"sale-demo-1","email":"buyer-one@example.invalid","created_at":"2026-11-17T10:00:00Z","price":2500,"currency":"usd","product_id":"product-demo-A","refunded":false},
+  {"id":"sale-demo-2","email":"buyer-two@example.invalid","created_at":"2026-11-17T10:15:00Z","price":0,"currency":"usd","product_id":"product-demo-B","refunded":false},
+  {"id":"sale-demo-1","email":"buyer-one@example.invalid","created_at":"2026-11-17T10:00:00Z","price":2500,"currency":"usd","product_id":"product-demo-A","refunded":false}
+]

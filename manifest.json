@@ -1,0 +1,50 @@
+{
+  "built": "2026-11-20T14:44:15.774Z",
+  "files": [
+    {
+      "file": "README.md",
+      "bytes": 2311,
+      "sha256": "1e476f6f59f657a20678949b826d816ea2dcd0baf6c84cdc12d667175c258312"
+    },
+    {
+      "file": "qa-localitzacio.mjs",
+      "bytes": 3011,
+      "sha256": "9ada489970be6c50f16d997ccbab9cb272bbc26d7f07dbd5a90ac68e58a85e94"
+    },
+    {
+      "file": "prototip.mjs",
+      "bytes": 5886,
+      "sha256": "ddb5b5954098b235bbfece223bee3a9c8d1cbbe692a348e13faf917456628347"
+    },
+    {
+      "file": "prototip.test.mjs",
+      "bytes": 3458,
+      "sha256": "a1aae94e4dbdac02e87cedfa1c2347b571375343815e7f641c6188d208e17133"
+    },
+    {
+      "file": "vendes-ficticies.json",
+      "bytes": 519,
+      "sha256": "ca215320a4d80e294e6272c1b369349c2f5614f5cc6df04bfa5d5b1b9b2802c3"
+    },
+    {
+      "file": "index.html",
+      "bytes": 12459,
+      "sha256": "33be8581174d60684d917f8afa7ee1150345aabe6639e68701c9013bfd4417ed"
+    },
+    {
+      "file": "alvaro-mendoza-json-qa-sample.zip",
+      "bytes": 148406,
+      "sha256": "953d2190338915e7153ddc052e1c3ad342f24723d65da9f10ccb73f79cd6adc6"
+    },
+    {
+      "file": "alvaro-mendoza-integration-sample.zip",
+      "bytes": 7150,
+      "sha256": "b77ea05f3ec7934f4f255d46a665d91fb91cd1b9b56847edb321318cbdc547f5"
+    },
+    {
+      "file": "alvaro-mendoza-json-qa-sample-report.pdf",
+      "bytes": 75020,
+      "sha256": "bc9453efd035b985968aee8e031f959980de7db9bfc7f9f28d2edda7a2e0085e"
+    }
+  ]
+}

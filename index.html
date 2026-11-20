@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Muestra local de comprobaciones técnicas de JSON de localización. Álvaro Mendoza: código e IA, con resultados reproducibles.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>JSON, sin sorpresas · Álvaro Mendoza</title>
+<style>
+:root{color-scheme:light;--paper:#f6f4ed;--ink:#172c3a;--muted:#4e6270;--line:#ccd4d3;--blue:#155cce;--red:#a62a18;--green:#17613e}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.55 system-ui,sans-serif}a{color:var(--blue)}header,main,footer{max-width:1180px;margin:auto;padding:24px 32px}header{display:flex;justify-content:space-between;border-bottom:1px solid var(--line);font-size:14px}.brand{font-weight:750}main{padding-top:56px}.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--blue);font-weight:750}h1{font-size:clamp(38px,6vw,76px);letter-spacing:-.055em;line-height:1.04;max-width:800px;margin:16px 0 26px}h2{font-size:28px;letter-spacing:-.025em;margin:0 0 12px}.intro{max-width:700px;color:var(--muted);font-size:20px}.strip{margin:28px 0 42px;padding:14px 18px;background:#e9efea;border-left:3px solid var(--green);font-size:15px}.worktop{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:18px}.actions{display:flex;gap:10px;flex-wrap:wrap}button,.cta{font:inherit;font-size:14px;font-weight:650;padding:11px 15px;border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;border-radius:6px;text-decoration:none;display:inline-block}button:hover,.cta:hover{background:#e5e9e9}.primary,.cta{background:var(--blue);color:white;border-color:var(--blue)}.primary:hover,.cta:hover{background:#124dab;color:white}button:disabled{opacity:.45;cursor:default}button:focus-visible,a:focus-visible,textarea:focus-visible{outline:3px solid #d27b00;outline-offset:3px}.editors{display:grid;grid-template-columns:1fr 1fr;gap:18px}label{display:block;font-size:14px;font-weight:700;margin:0 0 8px}textarea{display:block;width:100%;height:300px;resize:vertical;background:#fff;border:1px solid var(--line);padding:16px;border-radius:7px;font:13px/1.6 ui-monospace,Consolas,monospace;color:var(--ink);tab-size:2}.hint{font-size:13px;color:var(--muted);margin-top:8px}.run{margin:18px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}#status{font-size:15px;font-weight:650}#error{color:var(--red);font-weight:650;white-space:pre-wrap}.result{background:white;border:1px solid var(--line);border-radius:7px;margin-top:18px;padding:22px}.result h3{margin:0;font-size:18px}table{width:100%;border-collapse:collapse;margin-top:14px;font-size:14px;text-align:left}th,td{padding:12px 8px;border-top:1px solid var(--line);overflow-wrap:anywhere}th:first-child{width:45%}code{font-family:ui-monospace,Consolas,monospace;font-size:.85em}.scope{display:grid;grid-template-columns:1fr 1fr;gap:42px;border-top:1px solid var(--line);padding:40px 0;margin-top:52px}.scope p{color:var(--muted)}.scope ul{padding-left:20px;color:var(--muted)}footer{border-top:1px solid var(--line);font-size:13px;color:var(--muted);padding-bottom:36px}footer p{max-width:850px}.empty{color:var(--green);font-weight:650}@media(max-width:700px){header,main,footer{padding-left:20px;padding-right:20px}header{gap:15px;flex-wrap:wrap}main{padding-top:36px}.editors,.scope{grid-template-columns:1fr}.worktop{align-items:flex-start;flex-direction:column}textarea{height:270px}.scope{gap:24px}th,td{padding:10px 4px}.intro{font-size:18px}}
+</style></head><body>
+<header><span class="brand">Álvaro Mendoza</span><span>JSON QA · Muestra reproducible</span></header>
+<main><div class="eyebrow">QA técnico de localización</div><h1>Una variable cambiada.<br>Un fallo evitable.</h1>
+<p class="intro">Compara dos JSON y encuentra claves ausentes, textos vacíos, variables alteradas y diferencias literales de etiquetas HTML.</p>
+<div class="strip">Se ejecuta en este navegador. Los JSON no se envían a un servidor ni se guardan. Usa los ejemplos ficticios para explorar la muestra.</div>
+<section aria-labelledby="demo-title"><div class="worktop"><h2 id="demo-title">Prueba el caso</h2><div class="actions"><button id="reset" type="button">Ejemplo con errores</button><button id="corrected" type="button">Ver propuesta corregida</button></div></div>
+<div class="editors"><div><label for="source">01 · JSON de origen</label><textarea id="source" spellcheck="false" aria-describedby="input-hint"></textarea></div><div><label for="target">02 · JSON de destino</label><textarea id="target" spellcheck="false" aria-describedby="input-hint"></textarea></div></div>
+<p class="hint" id="input-hint">Puedes editar ambos campos. Formato admitido: objetos o listas con valores de texto. Límite de esta muestra: 200.000 caracteres por campo.</p>
+<div class="run"><button id="run" class="primary" type="button">Comparar JSON</button><button id="download" type="button" disabled>Descargar informe JSON</button><span id="status" role="status" aria-live="polite"></span></div>
+<p id="error" role="alert" hidden></p><div class="result" id="results" hidden><h3>Hallazgos técnicos</h3><div id="findings"></div></div></section>
+<section class="scope"><div><div class="eyebrow">Un entregable concreto</div><h2>Del ejemplo al fichero real.</h2><p>Piloto orientativo: 149 € antes de impuestos aplicables. Un JSON de origen y hasta dos destinos; máximo 500 claves y 3.000 palabras de origen.</p><p>Incluye informe reproducible y propuestas de corrección técnica. Alcance, herramientas permitidas, plazo y condiciones se acuerdan antes del encargo.</p><a class="cta" href="mailto:alvaromendoza.work@gmail.com?subject=Consulta%20sobre%20QA%20JSON&amp;body=Hola%2C%20quiero%20valorar%20un%20JSON%20de%20localizaci%C3%B3n.%0AFormato%20y%20volumen%3A%0AProblema%20observado%3A%0AResultado%20esperado%3A%0APlazo%3A%0ARestricciones%20de%20IA%3A%0A">Consultar un fichero</a><p class="hint">Primera consulta: describe el problema sin adjuntar datos confidenciales.</p></div><div><div class="eyebrow">Alcance de la muestra</div><h2>Qué comprueba.</h2><ul><li>Presencia de rutas de texto, valores vacíos y claves adicionales.</li><li>Marcadores simples como {name}, {{user.name}} o %s.</li><li>Diferencias literales de etiquetas HTML.</li></ul><p>Es una comprobación básica. No certifica traducciones, no interpreta ICU, no valida la estructura del HTML ni detecta claves duplicadas del JSON. Cero alertas significa que estas comprobaciones no encontraron diferencias.</p><p class="hint">Los resultados pueden incluir falsos positivos; se revisan según el formato y las reglas del proyecto.</p></div></section>
+</main><footer><p>Producción con código e IA. Demostración propia con datos ficticios. El alcance, las herramientas permitidas y el tratamiento de datos se acuerdan antes de cualquier encargo. Contacto: <a href="mailto:alvaromendoza.work@gmail.com">alvaromendoza.work@gmail.com</a>.</p></footer>
+<script>
+function flatten(value, prefix = '', out = {}) {
+  if (typeof value === 'string') out[prefix] = value;
+  else if (value && typeof value === 'object') {
+    for (const [key, item] of Object.entries(value)) {
+      // JSON Pointer escaping keeps literal keys and nested paths distinct.
+      flatten(item, `${prefix}/${key.replaceAll('~', '~0').replaceAll('/', '~1')}`, out);
+    }
+  } else throw new Error(`Expected string or object at ${prefix || '/'}`);
+  return out;
+}
+
+function variables(text) {
+  return (text.match(/\{\{\s*[\w.]+\s*\}\}|\{[\w.]+\}|%\d*\$?[sdif]|:[A-Za-z_]\w*/g) || [])
+    .map(x => x.replace(/\s+/g, '')).sort();
+}
+
+function tags(text) {
+  return (text.match(/<\/?[A-Za-z][^>]*>/g) || []).sort();
+}
+
+function audit(source, target) {
+  const a = flatten(source), b = flatten(target), findings = [];
+  for (const [key, value] of Object.entries(a)) {
+    if (!Object.hasOwn(b, key)) {
+      findings.push({key, type: 'MISSING_KEY'});
+      continue;
+    }
+    if (!b[key].trim()) findings.push({key, type: 'EMPTY_VALUE'});
+    if (JSON.stringify(variables(value)) !== JSON.stringify(variables(b[key]))) {
+      findings.push({key, type: 'VARIABLE_MISMATCH'});
+    }
+    if (JSON.stringify(tags(value)) !== JSON.stringify(tags(b[key]))) {
+      findings.push({key, type: 'HTML_TAG_DIFFERENCE'});
+    }
+  }
+  for (const key of Object.keys(b)) {
+    if (!Object.hasOwn(a, key)) findings.push({key, type: 'EXTRA_KEY'});
+  }
+  return findings;
+}
+
+const samples={"source":{"checkout":{"title":"Review your order","greeting":"Hello {name}","items":"You have {{count}} items","pay":"Pay now","help":"Read \u003cstrong>delivery details\u003c/strong>","total":"Total: {amount}"}},"target":{"checkout":{"title":"Revisa tu pedido","greeting":"Hola {nombre}","items":"Tienes {{count}} artículos","pay":"","help":"Lee los detalles del envío","legacy":"Texto antiguo"}},"corrected":{"checkout":{"title":"Revisa tu pedido","greeting":"Hola {name}","items":"Tienes {{count}} artículos","pay":"Pagar ahora","help":"Lee los \u003cstrong>detalles del envío\u003c/strong>","total":"Total: {amount}"}}};
+const byId=id=>document.getElementById(id);
+const names={MISSING_KEY:'Falta la clave',EXTRA_KEY:'Clave adicional',EMPTY_VALUE:'Texto vacío',VARIABLE_MISMATCH:'Variables distintas',HTML_TAG_DIFFERENCE:'Etiquetas HTML distintas'};
+let lastReport=null;
+function invalidate(){lastReport=null;byId('download').disabled=true;byId('results').hidden=true;byId('error').hidden=true;byId('status').textContent='Contenido modificado. Pulsa Comparar JSON.';}
+function compare(){
+  lastReport=null;byId('download').disabled=true;byId('results').hidden=true;byId('error').hidden=true;
+  try{
+    const parse=(id,label)=>{const text=byId(id).value;if(text.length>200000)throw Error(label+': supera el límite de la muestra.');try{const data=JSON.parse(text);if(!data||typeof data!=='object')throw Error('El nivel superior debe ser un objeto o lista.');return data;}catch(error){throw Error(label+': '+error.message);}};
+    const source=parse('source','Origen'),target=parse('target','Destino');
+    const findings=audit(source,target);lastReport={demonstration:true,checks:'Basic JSON string/key, simple placeholder and literal HTML-tag differences',linguistic_review:false,findings};
+    const holder=byId('findings');holder.replaceChildren();
+    if(!findings.length){const p=document.createElement('p');p.className='empty';p.textContent='Sin alertas en estas comprobaciones básicas.';holder.append(p);}else{
+      const table=document.createElement('table'),head=document.createElement('thead'),hr=document.createElement('tr');
+      for(const label of ['Ruta de texto','Hallazgo']){const th=document.createElement('th');th.scope='col';th.textContent=label;hr.append(th);}head.append(hr);table.append(head);
+      const body=document.createElement('tbody');for(const f of findings){const row=document.createElement('tr');for(const text of [f.key||'/',names[f.type]||f.type]){const cell=document.createElement('td');cell.textContent=text;row.append(cell);}body.append(row);}table.append(body);holder.append(table);
+    }
+    byId('status').textContent=findings.length+' '+(findings.length===1?'hallazgo':'hallazgos');byId('results').hidden=false;byId('download').disabled=false;
+  }catch(error){byId('status').textContent='No se ha generado un informe.';byId('error').textContent=error.message;byId('error').hidden=false;}
+}
+function load(corrected=false){byId('source').value=JSON.stringify(samples.source,null,2);byId('target').value=JSON.stringify(corrected?samples.corrected:samples.target,null,2);compare();}
+byId('reset').addEventListener('click',()=>load(false));byId('corrected').addEventListener('click',()=>load(true));byId('run').addEventListener('click',compare);
+for(const id of ['source','target'])byId(id).addEventListener('input',invalidate);
+byId('download').addEventListener('click',()=>{if(!lastReport)return;const url=URL.createObjectURL(new Blob([JSON.stringify(lastReport,null,2)+'\n'],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='json-qa-report.json';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+load(false);
+</script></body></html>
