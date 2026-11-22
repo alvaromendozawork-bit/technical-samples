@@ -3,20 +3,34 @@ import path from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 
 // Local prototype: callers supply the fetch implementation. No live execution path exists in this CLI.
+function transactionDate(value) {
+  // Date.parse alone normalizes some impossible dates and accepts local-time inputs.
+  // Validate the supplied calendar date before converting a zoned timestamp to UTC.
+  const match=/^(\d{4})-(\d{2})-(\d{2})T([01]\d|2[0-3]):([0-5]\d):([0-5]\d)(?:\.\d{1,9})?(?:Z|[+-](?:[01]\d|2[0-3]):[0-5]\d)$/.exec(value);
+  if(!match) throw Error('Invalid date');
+  const year=Number(match[1]),month=Number(match[2]),day=Number(match[3]);
+  const leap=year%4===0 && (year%100!==0 || year%400===0);
+  const monthDays=[31,leap?29:28,31,30,31,30,31,31,30,31,30,31];
+  if(month<1 || month>12 || day<1 || day>monthDays[month-1]) throw Error('Invalid date');
+  const timestamp=Date.parse(value);
+  if(!Number.isFinite(timestamp)) throw Error('Invalid date');
+  return new Date(timestamp).toISOString();
+}
+
 export function mapSale(sale) {
   if (!sale || typeof sale !== 'object') throw Error('Invalid sale');
   for(const field of ['id','email','created_at','currency','product_id']) {
     if(typeof sale[field]!=='string' || !sale[field].trim()) throw Error(`Missing or invalid ${field}`);
   }
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(sale.email)) throw Error('Invalid email');
-  if(!/^\d{4}-\d{2}-\d{2}T/.test(sale.created_at) || !Number.isFinite(Date.parse(sale.created_at))) throw Error('Invalid date');
+  const createdAt=transactionDate(sale.created_at);
   if(!Number.isSafeInteger(sale.price) || sale.price<0) throw Error('Invalid price');
   if(!/^[a-z]{3}$/i.test(sale.currency)) throw Error('Invalid currency');
   if(sale.refunded!==undefined && typeof sale.refunded!=='boolean') throw Error('Invalid refunded flag');
   const fields={
     'Sale ID':sale.id,
     'Customer email':sale.email.trim(),
-    'Transaction date':new Date(sale.created_at).toISOString(),
+    'Transaction date':createdAt,
     'Amount (minor units)':sale.price,
     'Currency':sale.currency.toUpperCase(),
     'Product ID':sale.product_id,

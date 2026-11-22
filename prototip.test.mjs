@@ -12,6 +12,28 @@ test('preserves minor units, currency and a zero-price sale',()=>{
 test('rejects invalid dates, amounts, emails and boolean flags',()=>{
   for(const patch of [{created_at:'yesterday'},{price:2.5},{email:'broken'},{refunded:'false'}]) assert.throws(()=>mapSale({...sale(),...patch}));
 });
+
+test('rejects impossible calendar dates instead of silently normalizing them',async()=>{
+  for(const created_at of ['2026-02-30T10:00:00Z','2026-02-29T10:00:00Z','2026-04-31T10:00:00Z']) {
+    assert.throws(()=>mapSale({...sale(),created_at}),/Invalid date/);
+  }
+  let writes=0;
+  await assert.rejects(syncSales([sale(),{...sale('B'),created_at:'2026-02-30T10:00:00Z'}],{
+    fetcher:async()=>{writes++;return good({records:[]});},sleep:async()=>{}
+  }),/Invalid date/);
+  assert.equal(writes,0);
+});
+
+test('requires an explicit timezone and rejects normalized end-of-day timestamps',()=>{
+  for(const created_at of ['2026-11-17T10:00:00','2026-11-17T24:00:00Z','2026-11-17T10:60:00Z']) {
+    assert.throws(()=>mapSale({...sale(),created_at}),/Invalid date/);
+  }
+});
+
+test('preserves valid leap days and converts explicit timezone offsets to UTC',()=>{
+  assert.equal(mapSale({...sale(),created_at:'2024-02-29T23:30:00.123+02:00'}).fields['Transaction date'],'2024-02-29T21:30:00.123Z');
+  assert.equal(mapSale({...sale(),created_at:'2026-01-01T00:30:00-01:00'}).fields['Transaction date'],'2026-01-01T01:30:00.000Z');
+});
 test('replaying sales does not duplicate the mock Airtable rows',async()=>{
   const rows=new Map();
   const fetcher=async(_url,options)=>{

@@ -1,6 +1,8 @@
 # Reproducible technical samples
 
-Independent demonstrations for the Álvaro Mendoza project, produced with code and AI. These use fictional data and are not previous client deployments or customer results.
+Independent demonstrations for Validune / Álvaro Mendoza, produced with code and AI. These use fictional data and are not previous client deployments or customer results.
+
+[Live checker and current downloadable samples](https://alvaro-mendoza-json-data-qa.idbskdna.chatgpt.site).
 
 ## JSON localization QA
 
@@ -14,7 +16,7 @@ The deliberately broken Spanish fixture produces five findings; a corrected fixt
 
 - [Source, mock tests and reproduction instructions (ZIP)](alvaro-mendoza-integration-sample.zip).
 
-The independent JavaScript prototype covers pagination, stable sale IDs, batched upserts and bounded retry cases. Nine tests use simulated APIs. Replaying the sample events preserves two rows in the local simulator. This does not demonstrate a live production integration: scheduling, concurrency, recovery, credentials, schema and real-service behavior still require project-specific validation.
+The independent JavaScript prototype covers pagination, stable sale IDs, batched upserts and bounded retry cases. Twelve tests use simulated APIs. Transaction timestamps require a valid calendar date and an explicit timezone; regression cases cover impossible dates, leap days and timezone offsets. Replaying the sample events preserves two rows in the local simulator. This does not demonstrate a live production integration: scheduling, concurrency, recovery, credentials, schema and real-service behavior still require project-specific validation. Unknown or partial write outcomes require reconciliation; a recent-sales window alone does not guarantee detection of old refunds.
 
 ## Reproduction and integrity
 
@@ -26,7 +28,7 @@ node --test prototip.test.mjs
 node prototip.mjs
 ```
 
-Unzip a sample and follow its included README. The browser demonstration requires no installation. The code samples require Node.js as specified in their instructions. `manifest.json` records each published sample's SHA-256 digest.
+Unzip a sample and follow its included README. The browser demonstration requires no installation. The code samples require Node.js as specified in their instructions. `manifest.json` records each bundled sample's SHA-256 digest.
 
 Please use fictional or anonymized data for initial evaluation. Tool permissions, data handling, scope and acceptance criteria must be agreed before any client work.
 
